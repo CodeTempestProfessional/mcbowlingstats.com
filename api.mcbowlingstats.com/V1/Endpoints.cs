@@ -1,33 +1,53 @@
 ﻿using Google.Cloud.Firestore;
 using Google.Cloud.Firestore.V1;
 using McBowlingstatsCore;
+using Microsoft.AspNetCore.Mvc;
 
 namespace api.mcbowlingstats.com.V1
 {
     public static class Endpoints
     {
         const string ENDPOINT_VERSION_NUMBER = "V1";
+        const string FIRESTORE_PROJECT_ID = "mcbowlingstats";
+        static FirestoreDb? firestoreDb;
 
         public static WebApplication RegisterV1Endpoints(this WebApplication application)
         {
             application.MapGet($"/{ENDPOINT_VERSION_NUMBER}/Tick", () => { return "Tock"; });
-            application.MapGet($"/{ENDPOINT_VERSION_NUMBER}/CreateDocument", () => { CreateDocument(); });
+            application.MapPost($"/{ENDPOINT_VERSION_NUMBER}/CreateGame", async ([FromBody] BowlingGame gameData) => { await AddGame(gameData); });
+            application.MapGet($"/{ENDPOINT_VERSION_NUMBER}/GetAllGames", async () => { return await GetAllGames(); });
             return application;
         }
 
-        private static async void CreateDocument()
+        public static void CheckDatabaseObject()
         {
-            string project = "mcbowlingstats";
-            Environment.SetEnvironmentVariable("FIRESTORE_EMULATOR_HOST", "localhost:8080");
-            FirestoreDb db = new FirestoreDbBuilder
+            if(firestoreDb == null) 
             {
-                ProjectId = project,
-                EmulatorDetection = Google.Api.Gax.EmulatorDetection.EmulatorOnly
-            }.Build();
+                firestoreDb = new FirestoreDbBuilder
+                {
+                    ProjectId = FIRESTORE_PROJECT_ID,
+                    EmulatorDetection = Google.Api.Gax.EmulatorDetection.EmulatorOnly
+                }.Build();
+            }
+        }
 
-            CollectionReference collection = db.Collection("Games");
+        private static async Task AddGame(BowlingGame bowlingGame)
+        {
+            CheckDatabaseObject();
+            CollectionReference collection = firestoreDb.Collection("Games");
+            DocumentReference document = await collection.AddAsync(bowlingGame);
+        }
 
-            DocumentReference document = await collection.AddAsync(GetSampleBowlingGame());
+        private static async Task<BowlingGame[]> GetAllGames()
+        {
+            CheckDatabaseObject();
+            CollectionReference collection = firestoreDb.Collection("Games");
+            Query query = collection.Limit(256);
+            QuerySnapshot querySnapshot = await query.GetSnapshotAsync();
+
+            return querySnapshot
+                .Select(x => x.ConvertTo<BowlingGame>())
+                .ToArray(); ;
         }
 
         /// <summary>
