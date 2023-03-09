@@ -15,6 +15,7 @@ namespace api.mcbowlingstats.com.V1
         {
             application.MapGet($"/{ENDPOINT_VERSION_NUMBER}/Tick", () => { return "Tock"; });
             application.MapPost($"/{ENDPOINT_VERSION_NUMBER}/CreateGame", async ([FromBody] BowlingGame gameData) => { await AddGame(gameData); });
+            application.MapPost($"/{ENDPOINT_VERSION_NUMBER}/CreateSamepleGame", async ([FromBody] BowlingGame gameData) => { await AddGame(GetSampleBowlingGame()); });
             application.MapGet($"/{ENDPOINT_VERSION_NUMBER}/GetAllGames", async () => { return await GetAllGames(); });
             return application;
         }

@@ -1,0 +1,41 @@
+﻿@using McBowlingstatsCore;
+@page "/fetchdata"
+@inject HttpClient Http
+
+<PageTitle>Bowling Data Interface</PageTitle>
+
+<h1>Bowling Peformance Data</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+@if (bowlingGames == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <select class="mb-4" id="selected-game" @bind="@selectedGame">
+        @for(int i = 0; i<bowlingGames.Length; i++)
+        {
+            <option value="i">@($"{bowlingGames[i].BowlingAlleyName} - {bowlingGames[i].DateTime}")</option>
+        }
+    </select>
+
+    <h1>@bowlingGames[selectedGame].BowlingAlleyName</h1>
+    <h2>@bowlingGames[selectedGame].DateTime.ToLocalTime()</h2>
+    <div class="container">
+        <div class="row bg-success">
+            @selectedGame
+        </div>
+    </div>
+}
+
+@code {
+    private BowlingGame[]? bowlingGames;
+    private int selectedGame = 0;
+    protected override async Task OnInitializedAsync()
+    {
+        bowlingGames = await Http.GetFromJsonAsync<BowlingGame[]>("V1/GetAllGames");
+    }
+
+}

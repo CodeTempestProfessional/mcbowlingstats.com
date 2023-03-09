@@ -9,6 +9,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{92D6EA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McBowlingstatsCore", "Shared\McBowlingstatsCore\McBowlingstatsCore.csproj", "{2304F60C-BA28-4076-93ED-F6827AEA238C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mcbowlingstats.com", "mcbowlingstats.com\mcbowlingstats.com.csproj", "{5901C41E-EAA0-4385-B7BD-0139F55240D3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,10 @@ Global
 		{2304F60C-BA28-4076-93ED-F6827AEA238C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2304F60C-BA28-4076-93ED-F6827AEA238C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2304F60C-BA28-4076-93ED-F6827AEA238C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5901C41E-EAA0-4385-B7BD-0139F55240D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5901C41E-EAA0-4385-B7BD-0139F55240D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5901C41E-EAA0-4385-B7BD-0139F55240D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5901C41E-EAA0-4385-B7BD-0139F55240D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
